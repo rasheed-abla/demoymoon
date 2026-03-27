@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>kink.ymoon – mobile first portfolio</title>
+    <style>
+      :root {
+        --bg: #050505;
+        --bg-soft: rgba(255, 255, 255, 0.04);
+        --bg-card: rgba(255, 255, 255, 0.05);
+        --line: rgba(255, 255, 255, 0.1);
+        --text: #ffffff;
+        --muted: rgba(255, 255, 255, 0.72);
+        --soft: rgba(255, 255, 255, 0.58);
+        --accent: #ffffff;
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        --radius: 26px;
+        --radius-sm: 20px;
+        --container: 1100px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      .page-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(60px);
+        opacity: 0.32;
+        animation:
+          floatSlow 9s ease-in-out infinite,
+          pulseGlow 12s ease-in-out infinite;
+      }
+
+      .orb.one {
+        width: 220px;
+        height: 220px;
+        top: 60px;
+        left: -70px;
+        background: rgba(214, 51, 132, 0.32);
+      }
+
+      .orb.two {
+        width: 260px;
+        height: 260px;
+        right: -70px;
+        top: 34%;
+        background: rgba(124, 58, 237, 0.24);
+        animation-direction: reverse;
+      }
+
+      .orb.three {
+        width: 200px;
+        height: 200px;
+        left: 22%;
+        bottom: 90px;
+        background: rgba(244, 63, 94, 0.16);
+      }
+
+      .grid-overlay {
+        position: absolute;
+        inset: 0;
+        opacity: 0.35;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.58);
+        backdrop-filter: blur(20px);
+      }
+
+      .wrap {
+        width: min(calc(100% - 32px), var(--container));
+        margin: 0 auto;
+      }
+
+      .header-inner {
+        min-height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        font-size: 11px;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .mobile-badge {
+        font-size: 10px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.55);
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .desktop-nav {
+        display: none;
+        gap: 28px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        padding-bottom: 92px;
+      }
+
+      .hero {
+        min-height: calc(100vh - 62px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 0 34px;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 24px;
+      }
+
+      .pill {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.67);
+        animation: softBounce 3s ease-in-out infinite;
+      }
+
+      .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .hero-copy h1 {
+        margin: 16px 0 0;
+        font-size: clamp(2.8rem, 11vw, 4.2rem);
+        line-height: 0.9;
+        letter-spacing: -0.07em;
+        font-weight: 300;
+      }
+
+      .hero-copy h1 span {
+        display: block;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .hero-copy p {
+        margin: 22px 0 0;
+        font-size: 15px;
+        line-height: 1.9;
+        color: var(--muted);
+        max-width: 620px;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .btn {
+        min-height: 54px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 22px;
+        font-size: 11px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        transition:
+          transform 0.28s ease,
+          background 0.28s ease,
+          color 0.28s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .btn-primary {
+        background: #fff;
+        color: #000;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.04);
+        color: #fff;
+      }
+
+      .hero-card,
+      .glass-card {
+        border: 1px solid var(--line);
+        background: var(--bg-card);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 26px;
+      }
+
+      .hero-card img {
+        height: 56vh;
+        min-height: 420px;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+      }
+
+      .hero-card:hover img {
+        transform: scale(1.04);
+      }
+
+      .hero-card::before,
+      .shine-line,
+      .card-line {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.72),
+          transparent
+        );
+        background-size: 200% 100%;
+        animation: shimmer 5s linear infinite;
+      }
+
+      .hero-card::before {
+        width: 100%;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.95),
+          rgba(0, 0, 0, 0.18),
+          transparent
+        );
+      }
+
+      .hero-card-copy {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 20px;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.32em;
+        color: rgba(255, 255, 255, 0.54);
+      }
+
+      .hero-card-copy p {
+        margin: 12px 0 0;
+        max-width: 340px;
+        font-size: 1.25rem;
+        line-height: 1.3;
+        font-weight: 300;
+      }
+
+      .quick-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 8px 0 2px;
+        scrollbar-width: none;
+      }
+
+      .quick-nav::-webkit-scrollbar,
+      .bottom-nav-track::-webkit-scrollbar {
+        display: none;
+      }
+
+      .quick-link,
+      .bottom-link {
+        white-space: nowrap;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.74);
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+      }
+
+      .quick-link {
+        font-size: 11px;
+        padding: 12px 16px;
+      }
+
+      .section {
+        padding: 54px 0 0;
+      }
+
+      .cards-grid,
+      .services-grid,
+      .portfolio-grid,
+      .reason-grid,
+      .contact-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .glass-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 22px;
+        padding: 20px;
+      }
+
+      .highlight-card {
+        font-size: 14px;
+        line-height: 1.9;
+        color: var(--muted);
+      }
+
+      .section-head {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      .section-head h2,
+      .about-grid h2,
+      .contact-copy h2,
+      .reason-copy h2 {
+        margin: 14px 0 0;
+        font-size: clamp(2rem, 9vw, 3rem);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+        font-weight: 300;
+      }
+
+      .section-head p,
+      .about-text p,
+      .reason-copy p,
+      .contact-copy p,
+      .service-card p,
+      .portfolio-card p,
+      .reason-list-item {
+        font-size: 15px;
+        line-height: 1.9;
+        color: var(--muted);
+      }
+
+      .about-grid,
+      .reason-grid,
+      .contact-grid {
+        display: grid;
+        gap: 26px;
+      }
+
+      .about-text,
+      .reason-list {
+        display: grid;
+        gap: 18px;
+      }
+
+      .portfolio-card {
+        padding: 0;
+      }
+
+      .portfolio-image-wrap {
+        overflow: hidden;
+        max-height: 420px;
+      }
+
+      .portfolio-card img {
+        height: 420px;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+      }
+
+      .portfolio-card:hover img {
+        transform: scale(1.05);
+      }
+
+      .portfolio-body,
+      .service-card,
+      .reason-list-item,
+      .contact-copy,
+      .contact-form {
+        position: relative;
+      }
+
+      .portfolio-body {
+        padding: 20px;
+      }
+
+      .card-line {
+        width: 84px;
+        opacity: 0.7;
+      }
+
+      .portfolio-body h3,
+      .service-card h3 {
+        margin: 10px 0 0;
+        font-size: 1.45rem;
+        line-height: 1.15;
+        font-weight: 300;
+        letter-spacing: -0.03em;
+      }
+
+      .service-card {
+        padding: 24px 20px 20px;
+      }
+
+      .service-card .card-line {
+        top: 0;
+        left: 20px;
+      }
+
+      .reason-box {
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      .reason-list-item {
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.32);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .contact-copy,
+      .contact-form {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .contact-copy h2 span {
+        display: block;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: rgba(255, 255, 255, 0.46);
+      }
+
+      .field input,
+      .field textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.38);
+        color: #fff;
+        border-radius: 18px;
+        padding: 15px 16px;
+        outline: none;
+        font-size: 15px;
+        transition:
+          border-color 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .field input:focus,
+      .field textarea:focus {
+        border-color: rgba(255, 255, 255, 0.24);
+        background: rgba(0, 0, 0, 0.46);
+      }
+
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: rgba(255, 255, 255, 0.24);
+      }
+
+      .bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 45;
+        border-top: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.74);
+        backdrop-filter: blur(20px);
+        padding: 12px;
+      }
+
+      .bottom-nav-track {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .bottom-link {
+        font-size: 10px;
+        padding: 12px 15px;
+      }
+
+      footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.4);
+        text-align: center;
+        padding: 22px 16px 110px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: rgba(255, 255, 255, 0.34);
+      }
+
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        animation: fadeUp 0.9s ease forwards;
+      }
+
+      .delay-1 {
+        animation-delay: 0.08s;
+      }
+      .delay-2 {
+        animation-delay: 0.16s;
+      }
+      .delay-3 {
+        animation-delay: 0.24s;
+      }
+
+      @keyframes floatSlow {
+        0%,
+        100% {
+          transform: translateY(0) translateX(0);
+        }
+        50% {
+          transform: translateY(-12px) translateX(6px);
+        }
+      }
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          opacity: 0.26;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.45;
+          transform: scale(1.06);
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes softBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
+      @media (min-width: 700px) {
+        .wrap {
+          width: min(calc(100% - 40px), var(--container));
+        }
+
+        .cta-row {
+          flex-direction: row;
+        }
+
+        .cards-grid,
+        .portfolio-grid,
+        .services-grid,
+        .contact-grid {
+          gap: 18px;
+        }
+
+        .cards-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 900px) {
+        .mobile-badge,
+        .quick-nav,
+        .bottom-nav {
+          display: none;
+        }
+
+        main {
+          padding-bottom: 0;
+        }
+
+        footer {
+          padding-bottom: 30px;
+        }
+
+        .desktop-nav {
+          display: flex;
+        }
+
+        .header-inner {
+          min-height: 68px;
+        }
+
+        .hero {
+          min-height: 0;
+          padding: 54px 0 76px;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1.05fr 0.95fr;
+          align-items: center;
+          gap: 46px;
+        }
+
+        .hero-copy {
+          order: 1;
+        }
+
+        .hero-visual {
+          order: 2;
+        }
+
+        .hero-card img {
+          height: 680px;
+        }
+
+        .hero-card-copy {
+          padding: 40px;
+        }
+
+        .hero-card-copy p {
+          font-size: 1.9rem;
+          max-width: 440px;
+        }
+
+        .cards-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .about-grid {
+          grid-template-columns: 0.82fr 1.18fr;
+          gap: 60px;
+        }
+
+        .portfolio-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 24px;
+        }
+
+        .portfolio-card.featured {
+          grid-column: span 2;
+        }
+
+        .portfolio-card.featured .portfolio-image-wrap {
+          max-height: 720px;
+        }
+
+        .portfolio-card.featured img {
+          height: 720px;
+        }
+
+        .services-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 24px;
+        }
+
+        .reason-grid {
+          grid-template-columns: 1fr 0.95fr;
+          gap: 56px;
+          align-items: start;
+        }
+
+        .contact-grid {
+          grid-template-columns: 0.95fr 1.05fr;
+          gap: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-bg" aria-hidden="true">
+      <div class="orb one"></div>
+      <div class="orb two"></div>
+      <div class="orb three"></div>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="#top">kink.ymoon</a>
+        <span class="mobile-badge">mobile first</span>
+        <nav class="desktop-nav">
+          <a href="#about">Über dich</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#services">Mehr daraus machen</a>
+          <a href="#contact">Kontakt</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero wrap">
+        <div class="hero-grid">
+          <div class="hero-visual fade-up delay-1">
+            <div class="hero-card">
+              <img
+                src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80"
+                alt="Editorial Portrait"
+              />
+              <div class="hero-overlay"></div>
+              <div class="hero-card-copy">
+                <div class="eyebrow">deine visuelle identität</div>
+                <p>
+                  Eine eigene Seite, die deinen Vibe nicht erklärt – sondern
+                  spürbar macht.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-copy fade-up">
+            <div class="pill">
+              <span class="pill-dot"></span>dark aesthetic • editorial mood •
+              eigene welt
+            </div>
+            <h1>
+              Nicht nur
+              <span>gesehen.</span>
+              Gefühlt.
+            </h1>
+            <p>
+              Ich hab dir diese Seite so gedacht, dass sie sich nicht nach
+              Werbung anfühlt, sondern nach dir. Ruhig, dunkel, präsent und mit
+              genau dem Raum, den dein Stil auf Instagram eigentlich nie ganz
+              bekommt.
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#portfolio">Portfolio ansehen</a>
+              <a class="btn btn-secondary" href="#contact">Schreib mir</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-nav fade-up delay-2">
+          <a class="quick-link" href="#about">Vibe</a>
+          <a class="quick-link" href="#portfolio">Looks</a>
+          <a class="quick-link" href="#services">Mehr</a>
+          <a class="quick-link" href="#contact">Kontakt</a>
+        </div>
+      </section>
+
+      <section class="section wrap">
+        <div class="cards-grid">
+          <div class="glass-card highlight-card fade-up">
+            Ein eigener Ort für deinen Stil – ohne Feed, ohne Ablenkung.
+          </div>
+          <div class="glass-card highlight-card fade-up delay-1">
+            Mehr Wirkung für Kooperationen, Shootings und kreative Anfragen.
+          </div>
+          <div class="glass-card highlight-card fade-up delay-2">
+            Persönlich, ruhig und bewusst inszeniert statt überladen oder
+            künstlich.
+          </div>
+          <div class="glass-card highlight-card fade-up delay-3">
+            Später leicht erweiterbar für exklusive Inhalte, Buchungen oder
+            Projekte.
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap" id="about">
+        <div class="about-grid">
+          <div class="fade-up">
+            <div class="eyebrow">Über dich</div>
+            <h2>Ein Raum zwischen Gedanken, Fashion und Gefühl.</h2>
+          </div>
+          <div class="about-text fade-up delay-1">
+            <p>
+              Der Gedanke hinter der Seite ist nicht, dich künstlich größer zu
+              machen, sondern das sichtbar zu machen, was eh schon da ist:
+              Stimmung, Haltung, Ästhetik und etwas Eigenes, das nicht beliebig
+              wirkt.
+            </p>
+            <p>
+              Auf Instagram scrollt man oft vorbei. Hier bleibt man eher hängen.
+              Die Bilder wirken bewusster, dein Stil kommt klarer rüber und
+              alles fühlt sich mehr nach einer echten Welt an – statt nach
+              einzelnen Posts.
+            </p>
+            <p>
+              Genau deshalb ist die Sprache hier persönlicher und direkter.
+              Nicht geschniegelt, nicht aufgesetzt und auch nicht so, als würde
+              dir irgendwas angedreht werden.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap" id="portfolio">
+        <div class="section-head fade-up">
+          <div>
+            <div class="eyebrow">Portfolio</div>
+            <h2>Deine Bilder, aber mit mehr Raum und mehr Wirkung.</h2>
+          </div>
+          <p>
+            Aktuell sind hier noch Platzhalter drin. Sobald echte Bilder
+            eingesetzt werden, kippt das Ganze sofort von einem schönen Konzept
+            zu einer Seite, die sich wirklich nach dir anfühlt.
+          </p>
+        </div>
+
+        <div class="portfolio-grid">
+          <article class="glass-card portfolio-card featured fade-up">
+            <div class="portfolio-image-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80"
+                alt="Look 01"
+              />
+            </div>
+            <div class="portfolio-body">
+              <div class="card-line"></div>
+              <h3>Look 01</h3>
+              <p>
+                Hier kommt eines deiner stärksten Bilder hin – am besten ein
+                Portrait mit viel Ausdruck.
+              </p>
+            </div>
+          </article>
+
+          <article class="glass-card portfolio-card fade-up delay-1">
+            <div class="portfolio-image-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80"
+                alt="Look 02"
+              />
+            </div>
+            <div class="portfolio-body">
+              <div class="card-line"></div>
+              <h3>Look 02</h3>
+              <p>Ein Bild mit Kontrast, dunkler Ästhetik und klarer Pose.</p>
+            </div>
+          </article>
+
+          <article class="glass-card portfolio-card fade-up delay-2">
+            <div class="portfolio-image-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80"
+                alt="Look 03"
+              />
+            </div>
+            <div class="portfolio-body">
+              <div class="card-line"></div>
+              <h3>Look 03</h3>
+              <p>
+                Hier passt etwas mit Farbe oder besonderem Licht – etwas, das
+                sofort hängen bleibt.
+              </p>
+            </div>
+          </article>
+
+          <article class="glass-card portfolio-card fade-up delay-3">
+            <div class="portfolio-image-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80"
+                alt="Look 04"
+              />
+            </div>
+            <div class="portfolio-body">
+              <div class="card-line"></div>
+              <h3>Look 04</h3>
+              <p>
+                Dein stärkster Shot zum Abschluss – etwas, das wirklich Eindruck
+                macht.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section wrap" id="services">
+        <div class="section-head fade-up">
+          <div>
+            <div class="eyebrow">Mehr daraus machen</div>
+            <h2>Nicht größer, sondern stimmiger.</h2>
+          </div>
+          <p>
+            Eine eigene Website muss nicht laut sein. Sie kann einfach genau der
+            Ort sein, an dem dein Stil verständlich wird, ohne dass du viel
+            erklären musst.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <article class="glass-card service-card fade-up">
+            <div class="card-line"></div>
+            <h3>Kooperationen</h3>
+            <p>
+              Wenn du mit Brands, Fotograf:innen oder kreativen Projekten
+              arbeitest, wirkt alles hier direkter, klarer und hochwertiger.
+            </p>
+          </article>
+
+          <article class="glass-card service-card fade-up delay-1">
+            <div class="card-line"></div>
+            <h3>Editorial</h3>
+            <p>
+              Deine Bilder bekommen den Raum, den sie verdienen – nicht zwischen
+              Storys und Reels, sondern wie in einem echten Portfolio.
+            </p>
+          </article>
+
+          <article class="glass-card service-card fade-up delay-2">
+            <div class="card-line"></div>
+            <h3>Eigener Space</h3>
+            <p>
+              Die Seite kann mit dir wachsen: neue Serien, exklusive Inhalte,
+              Anfragen oder einfach ein noch stärkerer Auftritt nach außen.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section wrap">
+        <div class="glass-card reason-box">
+          <div class="reason-grid">
+            <div class="reason-copy fade-up">
+              <div class="eyebrow">Warum das funktioniert</div>
+              <h2>Weil es sich mehr nach dir anfühlt als nach Marketing.</h2>
+              <p>
+                Genau das war hier die Idee: weg von dieser typischen
+                Verkaufssprache und hin zu etwas, das persönlicher, ruhiger und
+                echter rüberkommt. Eine Seite, die nicht überreden will, sondern
+                einfach zeigt, wie stark dein Auftritt sein kann, wenn alles
+                etwas mehr Raum bekommt.
+              </p>
+            </div>
+            <div class="reason-list fade-up delay-1">
+              <div class="reason-list-item">
+                Dein Stil wirkt bewusster und hochwertiger.
+              </div>
+              <div class="reason-list-item">
+                Anfragen fühlen sich direkter und persönlicher an.
+              </div>
+              <div class="reason-list-item">
+                Du bist nicht nur von einer Plattform abhängig.
+              </div>
+              <div class="reason-list-item">
+                Die Seite kann später genau mit dir mitwachsen.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap" id="contact">
+        <div class="contact-grid">
+          <div class="glass-card contact-copy fade-up">
+            <div class="eyebrow">Kontakt</div>
+            <h2>Wenn du magst,<span>machen wir es ganz auf dich.</span></h2>
+            <p>
+              Wenn dir die Richtung gefällt, kann man das komplett mit deinen
+              echten Bildern, deinen Farben, deinen Texten und deinem genauen
+              Vibe fertig machen. So, dass es am Ende nicht wie eine Vorlage
+              aussieht, sondern wirklich wie dein eigener Ort im Netz.
+            </p>
+          </div>
+
+          <form
+            class="glass-card contact-form fade-up delay-1"
+            id="contactForm"
+          >
+            <div class="field">
+              <label for="name">Dein Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Wie soll ich dich nennen?"
+              />
+            </div>
+
+            <div class="field">
+              <label for="email">E-Mail</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="deinname@example.com"
+              />
+            </div>
+
+            <div class="field">
+              <label for="message">Nachricht</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                placeholder="Schreib einfach, was du dir vorstellst oder worauf du Lust hättest."
+              ></textarea>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+              Nachricht senden
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Mobile Navigation">
+      <div class="bottom-nav-track">
+        <a class="bottom-link" href="#about">Vibe</a>
+        <a class="bottom-link" href="#portfolio">Looks</a>
+        <a class="bottom-link" href="#services">Mehr</a>
+        <a class="bottom-link" href="#contact">Kontakt</a>
+      </div>
+    </nav>
+
+    <footer>Konzept für kink.ymoon</footer>
+
+    <script>
+      const form = document.getElementById("contactForm");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const button = form.querySelector("button");
+        const original = button.textContent;
+        button.textContent = "Gesendet";
+        button.disabled = true;
+        setTimeout(() => {
+          button.textContent = original;
+          button.disabled = false;
+          form.reset();
+        }, 1800);
+      });
+
+      const links = document.querySelectorAll(
+        ".quick-link, .bottom-link, .desktop-nav a",
+      );
+      links.forEach((link) => {
+        link.addEventListener("click", () => {
+          document
+            .querySelectorAll(".quick-link, .bottom-link, .desktop-nav a")
+            .forEach((el) => {
+              el.style.background = "rgba(255,255,255,0.04)";
+              el.style.color = "rgba(255,255,255,0.74)";
+            });
+          link.style.background = "rgba(255,255,255,0.12)";
+          link.style.color = "#fff";
+        });
+      });
+    </script>
+  </body>
+</html>
